@@ -5,7 +5,7 @@ class accesoDenegado extends \Exception{
 	protected $code = 1;
 	protected $sugerencias=array();
 	public function sugerencias(){
-		$sugerencias["ira"]=new sugerencias\redirect("access/login");
+		$sugerencias["ira"]=new sugerencias\redirect("/access/login");
 		return $sugerencias;
 	}
 }

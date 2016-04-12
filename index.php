@@ -16,9 +16,8 @@ spl_autoload_register(function ($clase) {
 
 $core=new core();
 
-$controller=core::getController();
-
 try{
+	$controller=core::getController();
 	$controller->run();
 }catch(\Exception $e){
 	$sugerencias=$e->sugerencias();
@@ -27,4 +26,3 @@ try{
 		$sugerencia->run();
 	}
 }
-

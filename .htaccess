@@ -1,0 +1,14 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule ^([a-zA-Z0-9-]*)/?$ index.php?controlador=$1&accion=default&vista=default
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule ^([a-z0-9A-Z-]*)/([a-z0-9A-Z-]*)/?$ index.php?controlador=$1&accion=$2&vista=default
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule ^([a-z0-9A-Z-]*)/([a-z0-9A-Z-]*)/([a-z0-9A-Z-]*)/?.*$ index.php?controlador=$1&accion=$2&vista=$3
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule ^.*$ index.php?controlador=default&accion=default&vista=default
