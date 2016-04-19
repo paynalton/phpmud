@@ -5,11 +5,14 @@ use \base\core as core;
 class controller{
 
   protected $_accessRules=array();
+  protected $_urlParams=null;
 
   const ACCESS_GRANTED="O";
   const ACCESS_DENNIED="X";
   const ACCESS_RESTRICTED="R";
-
+  public function __construct(){
+    $this->_urlParams=core::getUrlParams();
+  }
 
 	public function run(){
 		$accion=core::getAction();

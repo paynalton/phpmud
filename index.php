@@ -13,7 +13,7 @@ spl_autoload_register(function ($clase) {
 	}
 });
 
-
+session_start();
 $core=new core();
 
 try{
