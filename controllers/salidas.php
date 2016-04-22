@@ -10,14 +10,18 @@ class salidas extends controller{
     );
 
     public function go(){
-      $class=$this->_urlParams["from"];
-      if(class_exists($class)){
-        $room=new $class();
+      $fromClass=$this->_urlParams["from"];
+      if(class_exists($fromClass)){
+        $from=new $fromClass($this->_urlParams["idfrom"]);
       }
-      if(array_key_exists($this->_urlParams["to"], $room->exits)){
-          $salida=new salida($room->exits[$this->_urlParams["to"]],$room);
+      $toClass=$this->_urlParams["to"];
+      if(class_exists($toClass)){
+        $to=new $toClass($this->_urlParams["idto"]);
       }
-      
+      if(array_key_exists($this->_urlParams["through"], $to->exits)){
+          $salida=new salida($to->exits[$this->_urlParams["through"]],$from,$to);
+      }
+
       $return=$salida->go();
       if(array_key_exists("message",$_SESSION)&&!is_array($_SESSION["message"])){
         $_SESSION["message"]=array();

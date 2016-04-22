@@ -19,9 +19,11 @@ class salida {
   public $alias="";
   public $keys=array();
   public $template="views/salida.html";
-  protected $_room=null;
-  public function __construct($params, room $room){
-    $this->_room=$room;
+  protected $_from=null;
+  protected $_to=null;
+  public function __construct($params, room $from,room $to=null){
+    $this->_from=$from;
+    $this->_to=$to;
     foreach($params as $k=>$v){
       if(property_exists($this, $k)){
         $this->$k=$v;
@@ -30,12 +32,15 @@ class salida {
   }
   public function render(){
     $temp=file_get_contents($this->template);
-    $room=urlencode(get_class( $this->_room));
+    $from=urlencode(get_class( $this->_from));
     $reemplazos=array(
       "/\[\[title\]\]/i"=>$this->title,
       "/\[\[description\]\]/i"=>$this->description,
       "/\[\[name\]\]/i"=>$this->name,
-      "/\[\[room\]\]/i"=>$room
+      "/\[\[room\]\]/i"=>$from,
+      "/\[\[to\]\]/i"=>urlencode($this->link),
+      "/\[\[idfrom\]\]/i"=>$this->_from->getId(),
+      "/\[\[idto\]\]/i"=>$this->_to?$this->_to->getId():""
     );
     return preg_replace(array_keys($reemplazos),$reemplazos,$temp);
   }
@@ -49,7 +54,13 @@ class salida {
           $open=true;
         }
       }
-      return (object)array("room"=>$this->_room,"message"=>implode("",$messages));
+      if(!$open){
+        if(method_exists($this->_to,"onLocked")){
+          $messages[]=$this->_to->onLocked($this);
+        }
+      }
+
+      return (object)array("room"=>$this->_from,"message"=>implode("",$messages));
     }
   }
   public function pasar($key){
